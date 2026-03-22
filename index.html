@@ -3,192 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Basic Grammar Quiz - SALVO GROUP (Stable Version)</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<title>🔥 SALVO QUIZ PRO</title>
+
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
 
 <style>
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(135deg,#f3e8ff,#ede9fe);
-    margin: 0;
-    padding: 0;
+body{
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#6c2bd9,#9333ea);
+margin:0;padding:20px;color:#333;
 }
 
-.quiz-container {
-    max-width: 900px;
-    margin: auto;
-    background: white;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+.quiz{
+max-width:900px;margin:auto;background:white;border-radius:20px;
+box-shadow:0 25px 60px rgba(0,0,0,0.3);overflow:hidden;
 }
 
-.header {
-    background: linear-gradient(135deg,#7c3aed,#a855f7);
-    color: white;
-    padding: 20px;
-    text-align: center;
+.header{
+background:linear-gradient(135deg,#7c3aed,#a855f7);
+color:white;padding:20px;text-align:center;
 }
 
-.score-panel {
-    display: flex;
-    justify-content: space-between;
-    padding: 15px;
-    background: #faf5ff;
-    font-weight: bold;
-    flex-wrap: wrap;
+.topbar{
+display:flex;justify-content:space-between;flex-wrap:wrap;
+padding:15px;background:#faf5ff;font-weight:bold;
 }
 
-.progress-bar {
-    width: 100%;
-    height: 10px;
-    background: #ddd;
+.progress-bar{width:100%;height:10px;background:#ddd;}
+#progressFill{
+height:10px;width:0%;
+background:linear-gradient(90deg,#7c3aed,#a855f7);
+transition:0.3s;
 }
 
-#progressFill {
-    height: 10px;
-    width: 0%;
-    background: linear-gradient(90deg,#7c3aed,#a855f7);
-    transition: width 0.3s ease;
+.content{padding:25px;}
+
+.option{
+padding:14px;margin:10px 0;border-radius:12px;
+border:1px solid #ddd;cursor:pointer;transition:0.2s;
+}
+.option:hover{transform:scale(1.02);background:#f5f3ff;}
+
+.correct{background:#dcfce7;border-color:green;}
+.wrong{background:#fee2e2;border-color:red;}
+
+.explanation{
+margin-top:15px;padding:12px;background:#fff7ed;
+border-left:5px solid orange;border-radius:10px;
 }
 
-.timer {
-    font-size: 18px;
-    color: #7c3aed;
+.nav{
+display:flex;justify-content:space-between;padding:20px;
 }
 
-.question {
-    padding: 25px;
-    font-size: 20px;
-    font-weight: bold;
+button{
+padding:10px 18px;border:none;border-radius:10px;
+background:#7c3aed;color:white;font-weight:bold;cursor:pointer;
+}
+button:disabled{opacity:0.4}
+
+.number-nav{text-align:center;padding:10px;}
+.number-nav button{
+margin:4px;width:35px;height:35px;border-radius:50%;
+}
+.answered{background:#22c55e;}
+.active{background:#111827;color:white;}
+
+.result{
+text-align:center;padding:30px;display:none;
+}
+.grade{
+font-size:28px;font-weight:bold;color:#7c3aed;
 }
 
-.option {
-    margin: 10px 25px;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    cursor: pointer;
-    transition: 0.2s;
+.toast{
+position:fixed;bottom:20px;right:20px;
+padding:12px 20px;border-radius:10px;
+color:white;font-weight:bold;
 }
-
-.option:hover {
-    background: #f3e8ff;
-}
-
-.correct {
-    background: #d1fae5;
-    border-color: green;
-}
-
-.wrong {
-    background: #fee2e2;
-    border-color: red;
-    animation: shake 0.4s;
-}
-
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
-}
-
-.navigation {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-}
-
-button {
-    padding: 10px 18px;
-    border: none;
-    border-radius: 30px;
-    background: linear-gradient(135deg,#7c3aed,#a855f7);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-button:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-.number-nav {
-    padding: 10px;
-    text-align: center;
-}
-
-.number-nav button {
-    margin: 4px;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-}
-
-.number-nav .answered {
-    background: #22c55e;
-}
-
-.number-nav .active {
-    background: #111827;
-}
-
-.result {
-    text-align: center;
-    padding: 30px;
-    display: none;
-}
-
-.grade {
-    font-size: 28px;
-    font-weight: bold;
-    color: #7c3aed;
-}
-
-.explanation {
-    background: #fef9c3;
-    padding: 15px;
-    margin: 15px 25px;
-    border-left: 5px solid orange;
-    border-radius: 10px;
-}
-
-.restart-btn {
-    margin-top: 20px;
-}
-
 </style>
 </head>
 
 <body>
 
-<div class="quiz-container">
+<div class="quiz">
 
 <div class="header">
-<h1><i class="fas fa-graduation-cap"></i> ADVANCED GRAMMAR QUIZ</h1>
-<p>SALVO GROUP Interactive Quiz System - Stable Build</p>
+<h2>🔥 SALVO QUIZ PRO</h2>
+<p>Advanced Grammar System</p>
 </div>
 
-<div class="score-panel">
+<div class="topbar">
 <div>Score: <span id="score">0</span></div>
-<div class="timer">Time: <span id="timer">10:00</span></div>
+<div>Time: <span id="timer">10:00</span></div>
 </div>
 
 <div class="progress-bar">
 <div id="progressFill"></div>
 </div>
 
-<div id="quizArea"></div>
+<div class="content">
+<h3 id="question"></h3>
+<div id="options"></div>
+<div id="explanation"></div>
+</div>
 
 <div class="number-nav" id="numberNav"></div>
 
-<div class="navigation">
-<button id="prevBtn">Previous</button>
-<button id="nextBtn">Next</button>
+<div class="nav">
+<button id="prevBtn">⬅</button>
+<button id="nextBtn">➡</button>
 <button id="submitBtn">Submit</button>
 </div>
 
@@ -196,402 +120,229 @@ button:disabled {
 <h2>Quiz Complete</h2>
 <div id="finalScore"></div>
 <div class="grade" id="grade"></div>
-<button class="restart-btn" onclick="restartQuiz()">Restart Quiz</button>
+<button onclick="location.reload()">Restart</button>
 </div>
 
 </div>
+
+<audio id="correctSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3"></audio>
+<audio id="wrongSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4c8f3a0d4e.mp3"></audio>
 
 <script>
 
-const questions = [
+const correctSound=document.getElementById("correctSound");
+const wrongSound=document.getElementById("wrongSound");
+
+const questions=[
 
 {
-text: "A: My phone isn’t working properly anymore. B: You should ________ it fixed before it completely stops working.",
-options: ["have","having","had","to have"],
-correct: 0,
-explanation: "Struktur causative: should + have + object + Verb 3 → should have it fixed (menyuruh seseorang memperbaikinya)."
+q:"You should ________ it fixed before it stops working.",
+o:["have","having","had","to have"],a:0,
+e:"Causative: should have something done"
 },
-
 {
-text: "I regret not accepting that overseas job offer. If only I _____ more willing to take risks back then",
-options: ["had been","was","am","have been"],
-correct: 0,
-explanation: "If only + past perfect digunakan untuk menyesali masa lalu. Struktur: If only + subject + had + Verb 3."
+q:"If only I _____ more willing before",
+o:["had been","was","am","have been"],a:0,
+e:"If only + past perfect"
 },
-
 {
-text: "Your company has grown a lot this year! Yes, and not only ________ more employees, but we've also expanded to two new locations.",
-options: ["have we hired","we hired","we have hired","did we hire"],
-correct: 0,
-explanation: "Not only di awal kalimat menyebabkan inversion: Not only have we hired..., but also..."
+q:"Not only ________ more employees, but also expanded",
+o:["have we hired","we hired","we have hired","did we hire"],a:0,
+e:"Inversion after not only"
 },
-
 {
-text: "A: I was supposed to land at 8 PM, but my flight was delayed. B: You should ________ me so I wouldn’t have waited for hours!",
-options: ["have told","told","tell","telling"],
-correct: 0,
-explanation: "Should have + Verb 3 digunakan untuk menyatakan penyesalan terhadap masa lalu."
+q:"You should ________ me earlier",
+o:["have told","told","tell","telling"],a:0,
+e:"Should have + V3"
 },
-
 {
-text: "You wouldn’t believe what happened! I ran into my childhood friend in Paris! Wow! Rarely ________ someone experience such a coincidence.",
-options: ["does","did","has","is"],
-correct: 0,
-explanation: "Rarely di awal kalimat menyebabkan inversion: Rarely does someone experience..."
+q:"Rarely ________ someone experience this",
+o:["does","did","has","is"],a:0,
+e:"Inversion → does"
 },
-
 {
-text: "He never finishes his tasks on time. Nor ________ to take responsibility for it!",
-options: ["does he try","he tries","did he try","he try"],
-correct: 0,
-explanation: "Nor di awal kalimat menyebabkan inversion: Nor does he try..."
+q:"Nor ________ to take responsibility",
+o:["does he try","he tries","did he try","he try"],a:0,
+e:"Nor → inversion"
 },
-
 {
-text: "You should have thought twice before making that decision. Yes, I wish I ________ more carefully before acting.",
-options: ["had thought","thought","have thought","think"],
-correct: 0,
-explanation: "I wish + past perfect digunakan untuk menyesali tindakan masa lalu."
+q:"I wish I ________ more carefully",
+o:["had thought","thought","have thought","think"],a:0,
+e:"Wish → past perfect"
 },
-
 {
-text: "If she _____ here tomorrow, we will go to the beach",
-options: ["comes","came","come","coming"],
-correct: 0,
-explanation: "First Conditional: If + Simple Present, will + Verb 1."
+q:"If she _____ tomorrow, we will go",
+o:["comes","came","come","coming"],a:0,
+e:"First conditional"
 },
-
 {
-text: "If it _______ tomorrow, we can't have a picnic",
-options: ["rains","rain","rained","raining"],
-correct: 0,
-explanation: "First Conditional menggunakan Simple Present setelah IF."
+q:"If it ______ tomorrow, we can't picnic",
+o:["rains","rain","rained","raining"],a:0,
+e:"Present simple"
 },
-
 {
-text: "If you _____ him, tell him to call me",
-options: ["see","saw","seen","seeing"],
-correct: 0,
-explanation: "First Conditional: If + present simple → see."
+q:"If you _____ him, tell him",
+o:["see","saw","seen","seeing"],a:0,
+e:"First conditional"
 },
-
 {
-text: "If she doesn't hurry, she _____ miss the bus",
-options: ["will","would","can","should"],
-correct: 0,
-explanation: "First Conditional: If + present simple, will + verb 1."
+q:"If she doesn't hurry, she _____ miss",
+o:["will","would","can","should"],a:0,
+e:"Will future"
 },
-
 {
-text: "If I ___ enough money, I will buy a new car",
-options: ["have","had","having","has"],
-correct: 0,
-explanation: "First Conditional: If + Simple Present (have)."
+q:"If I ___ money, I will buy car",
+o:["have","had","having","has"],a:0,
+e:"Present simple"
 },
-
 {
-text: "If you _____ to see the movie, you can borrow my DVD",
-options: ["want","wanted","wanting","wants"],
-correct: 0,
-explanation: "First Conditional: If + present simple → want."
+q:"If you _____ to see it, borrow mine",
+o:["want","wanted","wanting","wants"],a:0,
+e:"Present simple"
 },
-
 {
-text: "If you _____ to the music too loud, you might damage your hearing",
-options: ["listen","listened","listening","listens"],
-correct: 0,
-explanation: "First Conditional: If + present simple → listen."
+q:"If you _____ too loud, hearing damaged",
+o:["listen","listened","listening","listens"],a:0,
+e:"Present simple"
 },
-
 {
-text: "I would go and see her if I _____ you",
-options: ["were","am","was","be"],
-correct: 0,
-explanation: "Second Conditional menggunakan: If I were you (struktur tetap untuk saran)."
+q:"If I _____ you, I would go",
+o:["were","am","was","be"],a:0,
+e:"If I were you"
 },
-
 {
-text: "If he ____ lots of chocolate, he would ____ bad teeth",
-options: ["ate – have","eat – has","eats – have","ate – has"],
-correct: 0,
-explanation: "Second Conditional: If + past simple (ate), would + verb 1 (have)."
+q:"If he ate, he would have teeth issues",
+o:["Correct","Wrong","Wrong","Wrong"],a:0,
+e:"Second conditional correct"
 },
-
 {
-text: "My boss would ____ very pleased if I finished the job",
-options: ["be","is","was","been"],
-correct: 0,
-explanation: "Second Conditional: would + verb 1 → be."
+q:"My boss would ____ pleased",
+o:["be","is","was","been"],a:0,
+e:"Would + V1"
 },
-
 {
-text: "If you had a million dollars, what would you do",
-options: ["Correct sentence","Incorrect sentence","Needs will","Needs have"],
-correct: 0,
-explanation: "Kalimat ini sudah benar menggunakan Second Conditional: If + past simple, would + verb 1."
+q:"If they ____ the match, they celebrate",
+o:["win","won","winning","wins"],a:0,
+e:"First conditional"
 },
-
 {
-text: "If they ____ the match, they will celebrate",
-options: ["win","won","winning","wins"],
-correct: 0,
-explanation: "First Conditional: If + present simple → win."
-},
-
-{
-text: "If you _____ the exam, you would have been happy",
-options: ["had passed","pass","passed","passing"],
-correct: 0,
-explanation: "Third Conditional: If + past perfect → had passed, would have + verb 3."
+q:"If you _____ exam, you'd be happy",
+o:["had passed","pass","passed","passing"],a:0,
+e:"Third conditional"
 }
 
 ];
 
-let current = 0;
-let answers = new Array(questions.length).fill(null);
-let quizSubmitted = false;
+let current=0;
+let answers=new Array(questions.length).fill(null);
+let submitted=false;
+let time=600;
 
-function renderQuestion() {
+function render(){
+let q=questions[current];
+document.getElementById("question").innerText=q.q;
 
-const q = questions[current];
+let box=document.getElementById("options");
+box.innerHTML="";
 
-let html = `<div class="question">${q.text}</div>`;
+q.o.forEach((opt,i)=>{
+let div=document.createElement("div");
+div.className="option";
 
-q.options.forEach((opt,i)=>{
-
-let className = "option";
-
-if(answers[current]!==null){
-
-if(i===q.correct) className += " correct";
-
-if(i===answers[current] && i!==q.correct)
-className += " wrong";
-
+if(answers[current]!=null){
+if(i==q.a) div.classList.add("correct");
+if(i==answers[current] && i!=q.a) div.classList.add("wrong");
 }
 
-html += `
-<div class="${className}" onclick="selectAnswer(${i})">
-${String.fromCharCode(65+i)}. ${opt}
-</div>`;
+div.innerText=opt;
 
+div.addEventListener("click",()=>{
+if(answers[current]!=null||submitted) return;
+
+answers[current]=i;
+
+if(i==q.a){
+confetti({particleCount:80,spread:60});
+correctSound.currentTime=0;
+correctSound.play();
+}else{
+wrongSound.currentTime=0;
+wrongSound.play();
+}
+
+render();
+updateScore();
 });
 
-if(answers[current]!==null){
+box.appendChild(div);
+});
 
-html += `
-<div class="explanation">
-${q.explanation}
-</div>`;
+let exp=document.getElementById("explanation");
+exp.innerHTML=answers[current]!=null?`<b>Penjelasan:</b> ${q.e}`:"";
 
-}
-
-document.getElementById("quizArea").innerHTML = html;
-
+updateNav();
 updateProgress();
 updateNumberNav();
-updateNavButtons();
-
-}
-
-function selectAnswer(i){
-
-if(answers[current]!==null || quizSubmitted) return;
-
-answers[current] = i;
-
-if(i===questions[current].correct){
-
-burstConfetti();
-playSound();
-
-}
-
-updateScore();
-renderQuestion();
-
 }
 
 function updateScore(){
-
-let score = 0;
-
-answers.forEach((a,i)=>{
-
-if(a===questions[i].correct)
-score++;
-
-});
-
-
-document.getElementById("score").innerText = score;
-
+let score=answers.filter((a,i)=>a===questions[i].a).length;
+document.getElementById("score").innerText=score;
 }
 
 function updateProgress(){
-
-let answered = answers.filter(a=>a!==null).length;
-
-let percent = (answered/questions.length)*100;
-
-
-document.getElementById("progressFill").style.width = percent+"%";
-
+let done=answers.filter(a=>a!=null).length;
+document.getElementById("progressFill").style.width=(done/questions.length*100)+"%";
 }
 
 function updateNumberNav(){
-
 let nav="";
-
 for(let i=0;i<questions.length;i++){
-
 let cls="";
-
-if(answers[i]!==null)
-cls += "answered ";
-
-if(i===current)
-cls += "active";
-
-nav += `<button class="${cls}" onclick="goTo(${i})">${i+1}</button>`;
-
+if(answers[i]!=null) cls+="answered ";
+if(i==current) cls+="active";
+nav+=`<button class="${cls}" onclick="go(${i})">${i+1}</button>`;
+}
+document.getElementById("numberNav").innerHTML=nav;
 }
 
-
-document.getElementById("numberNav").innerHTML = nav;
-
+function updateNav(){
+document.getElementById("prevBtn").disabled=current==0;
+document.getElementById("nextBtn").disabled=current==questions.length-1;
 }
 
-function updateNavButtons(){
+function go(i){current=i;render();}
 
+document.getElementById("nextBtn").onclick=()=>{if(current<questions.length-1){current++;render();}};
+document.getElementById("prevBtn").onclick=()=>{if(current>0){current--;render();}};
 
-document.getElementById("prevBtn").disabled = current===0;
-
-
-document.getElementById("nextBtn").disabled = current===questions.length-1;
-
-}
-
-function goTo(i){
-
-current=i;
-renderQuestion();
-
-}
-
-
-document.getElementById("nextBtn").onclick=()=>{
-
-if(current<questions.length-1){
-current++;
-renderQuestion();
-}
-
-};
-
-
-document.getElementById("prevBtn").onclick=()=>{
-
-if(current>0){
-current--;
-renderQuestion();
-}
-
-};
-
-function burstConfetti(){
-
-if (typeof confetti === "function") {
-
-confetti({
-particleCount:150,
-spread:80,
-origin:{y:0.6}
-});
-
-}
-
-}
-
-function playSound(){
-
-try{
-const audio = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
-audio.play();
-}catch(e){
-console.log("Sound blocked");
-}
-
-}
-
-let timeLeft = 600;
-
-const timerInterval = setInterval(()=>{
-
-if(quizSubmitted) return;
-
-let minutes = Math.floor(timeLeft/60);
-let seconds = timeLeft%60;
-
-
-document.getElementById("timer").innerText =
-`${minutes}:${seconds.toString().padStart(2,'0')}`;
-
-if(timeLeft<=0){
-submitQuiz();
-}
-
-if(timeLeft>0){
-timeLeft--;
-}
-
+setInterval(()=>{
+if(submitted) return;
+let m=Math.floor(time/60);
+let s=time%60;
+document.getElementById("timer").innerText=`${m}:${s.toString().padStart(2,'0')}`;
+if(time<=0) submit();
+time--;
 },1000);
 
-function submitQuiz(){
+function submit(){
+if(submitted) return;
+submitted=true;
 
-if(quizSubmitted) return;
-
-quizSubmitted = true;
-
-clearInterval(timerInterval);
-
-let score = answers.filter((a,i)=>a===questions[i].correct).length;
-
-let percent = Math.round((score/questions.length)*100);
-
-let grade="";
-
-if(percent>=90) grade="A";
-else if(percent>=80) grade="B";
-else if(percent>=70) grade="C";
-else if(percent>=60) grade="D";
-else grade="E";
-
+let score=answers.filter((a,i)=>a===questions[i].a).length;
+let percent=Math.round(score/questions.length*100);
+let grade=percent>=90?"A":percent>=80?"B":percent>=70?"C":percent>=60?"D":"E";
 
 document.getElementById("resultBox").style.display="block";
+document.getElementById("finalScore").innerText=`Score: ${score}/${questions.length} (${percent}%)`;
+document.getElementById("grade").innerText=`Grade: ${grade}`;
 
-
-document.getElementById("finalScore").innerText =
-`Score: ${score}/${questions.length} (${percent}%)`;
-
-
-document.getElementById("grade").innerText =
-`Grade: ${grade}`;
-
-burstConfetti();
-
+confetti({particleCount:120,spread:70});
 }
 
+document.getElementById("submitBtn").onclick=submit;
 
-document.getElementById("submitBtn").onclick=submitQuiz;
-
-function restartQuiz(){
-
-location.reload();
-
-}
-
-renderQuestion();
+render();
 
 </script>
 
