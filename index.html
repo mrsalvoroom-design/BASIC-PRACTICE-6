@@ -1,350 +1,622 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔥 SALVO QUIZ PRO</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Salvo Group | Grammar Basic Part 6</title>
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #f8f9ff 0%, #f0f2fe 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+        }
 
-<style>
-body{
-font-family:'Segoe UI',sans-serif;
-background:linear-gradient(135deg,#6c2bd9,#9333ea);
-margin:0;padding:20px;color:#333;
-}
+        .quiz-container {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(2px);
+            border-radius: 3rem;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.2), 0 2px 10px rgba(0,0,0,0.02);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
 
-.quiz{
-max-width:900px;margin:auto;background:white;border-radius:20px;
-box-shadow:0 25px 60px rgba(0,0,0,0.3);overflow:hidden;
-}
+        .hero {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F3E8FF 100%);
+            padding: 1.8rem 2rem;
+            border-bottom: 1px solid rgba(128, 90, 213, 0.2);
+        }
 
-.header{
-background:linear-gradient(135deg,#7c3aed,#a855f7);
-color:white;padding:20px;text-align:center;
-}
+        .hero h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(120deg, #5E3A9C, #9B6BFF);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-.topbar{
-display:flex;justify-content:space-between;flex-wrap:wrap;
-padding:15px;background:#faf5ff;font-weight:bold;
-}
+        .hero h1 i {
+            background: none;
+            color: #8B5CF6;
+            font-size: 2rem;
+        }
 
-.progress-bar{width:100%;height:10px;background:#ddd;}
-#progressFill{
-height:10px;width:0%;
-background:linear-gradient(90deg,#7c3aed,#a855f7);
-transition:0.3s;
-}
+        .sub {
+            color: #4a3b6e;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
 
-.content{padding:25px;}
+        .score-panel {
+            background: white;
+            margin: 0 1.8rem 1rem 1.8rem;
+            border-radius: 60px;
+            padding: 0.5rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 6px 14px rgba(106, 46, 176, 0.08);
+            border: 1px solid rgba(156, 107, 255, 0.3);
+        }
 
-.option{
-padding:14px;margin:10px 0;border-radius:12px;
-border:1px solid #ddd;cursor:pointer;transition:0.2s;
-}
-.option:hover{transform:scale(1.02);background:#f5f3ff;}
+        .score-box {
+            background: #f1ebff;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-weight: 700;
+            color: #5a2d9c;
+        }
 
-.correct{background:#dcfce7;border-color:green;}
-.wrong{background:#fee2e2;border-color:red;}
+        .score-box span {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #6c2bd9;
+        }
 
-.explanation{
-margin-top:15px;padding:12px;background:#fff7ed;
-border-left:5px solid orange;border-radius:10px;
-}
+        .progress-indicator {
+            font-weight: 500;
+            background: #ede8ff;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            color: #4f359b;
+        }
 
-.nav{
-display:flex;justify-content:space-between;padding:20px;
-}
+        .quiz-card {
+            padding: 1.8rem 2rem 2rem 2rem;
+        }
 
-button{
-padding:10px 18px;border:none;border-radius:10px;
-background:#7c3aed;color:white;font-weight:bold;cursor:pointer;
-}
-button:disabled{opacity:0.4}
+        .question-text {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #1E1A3E;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+            background: #F9F6FF;
+            padding: 1rem 1.5rem;
+            border-radius: 2rem;
+            border-left: 8px solid #9B6BFF;
+        }
 
-.number-nav{text-align:center;padding:10px;}
-.number-nav button{
-margin:4px;width:35px;height:35px;border-radius:50%;
-}
-.answered{background:#22c55e;}
-.active{background:#111827;color:white;}
+        .question-translation {
+            font-size: 0.95rem;
+            color: #6b5b8e;
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            font-style: normal;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #FCF9FF;
+            padding: 0.7rem 1.5rem;
+            border-radius: 1rem;
+            border-left: 3px solid #cbbaff;
+        }
 
-.result{
-text-align:center;padding:30px;display:none;
-}
-.grade{
-font-size:28px;font-weight:bold;color:#7c3aed;
-}
+        .question-translation i {
+            color: #9B6BFF;
+            font-size: 1rem;
+        }
 
-.toast{
-position:fixed;bottom:20px;right:20px;
-padding:12px 20px;border-radius:10px;
-color:white;font-weight:bold;
-}
-</style>
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-btn {
+            background: white;
+            border: 1.5px solid #E2D6FF;
+            border-radius: 1.2rem;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #2d2a4a;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: #F5EFFF;
+            border-color: #9B6BFF;
+            transform: translateX(6px);
+        }
+
+        .prefix {
+            font-weight: 800;
+            background: #ede4ff;
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #6c2bd9;
+        }
+
+        .feedback-area {
+            background: #F8F4FF;
+            border-radius: 1.5rem;
+            padding: 1.2rem 1.5rem;
+            margin: 1rem 0 1.5rem;
+            border-left: 6px solid #9B6BFF;
+            transition: all 0.2s;
+        }
+
+        .feedback-correct {
+            background: #E6F9ED;
+            border-left-color: #2b9348;
+        }
+
+        .feedback-wrong {
+            background: #FFEFEF;
+            border-left-color: #e63946;
+        }
+
+        .feedback-neutral {
+            background: #F4F0FE;
+            border-left-color: #bdc3e0;
+        }
+
+        .feedback-text {
+            font-weight: 500;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: white;
+            border: none;
+            padding: 0.8rem 1.6rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            border: 1px solid #ddd;
+        }
+
+        .nav-btn-primary {
+            background: linear-gradient(95deg, #7C3AED, #A78BFA);
+            color: white;
+            border: none;
+            box-shadow: 0 6px 14px rgba(124, 58, 237, 0.3);
+        }
+
+        .nav-btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            filter: brightness(1.02);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .result-area {
+            background: white;
+            border-radius: 2rem;
+            margin: 1rem 1.8rem 1.8rem 1.8rem;
+            padding: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            border-top: 2px solid #cbbaff;
+        }
+
+        .weakness-tag {
+            background: #ede8ff;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin: 0.2rem;
+        }
+
+        @media (max-width: 680px) {
+            .quiz-card {
+                padding: 1rem;
+            }
+            .question-text {
+                font-size: 1.3rem;
+            }
+            .hero h1 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
+<div class="quiz-container" id="quizApp">
+    <div class="hero">
+        <h1><i class="fas fa-gem"></i> SALVO GROUP <br> GRAMMAR BASIC PART 1</h1>
+        <div class="sub">✨ Master your English grammar — instant feedback & smart scoring</div>
+    </div>
 
-<div class="quiz">
+    <div class="score-panel">
+        <div class="score-box"><i class="fas fa-star-of-life"></i> SCORE : <span id="scoreValue">0</span> / <span id="totalQuestions">0</span></div>
+        <div class="progress-indicator"><i class="fas fa-question-circle"></i> Soal <span id="currentIdxDisplay">1</span> dari <span id="totalDisplay">0</span></div>
+    </div>
 
-<div class="header">
-<h2>🔥 SALVO QUIZ PRO</h2>
-<p>Advanced Grammar System</p>
+    <div class="quiz-card" id="quizCard">
+        <div class="question-text" id="questionText">Loading...</div>
+        <div class="question-translation" id="questionTranslation"></div>
+        <div class="options-grid" id="optionsContainer"></div>
+        <div id="feedbackArea" class="feedback-area feedback-neutral">
+            <div class="feedback-text"><i class="fas fa-lightbulb"></i> Pilih salah satu jawaban untuk melihat pembahasan & kunci.</div>
+        </div>
+        <div class="nav-buttons">
+            <button class="nav-btn" id="prevBtn" disabled><i class="fas fa-arrow-left"></i> Sebelumnya</button>
+            <button class="nav-btn nav-btn-primary" id="nextBtn" disabled><i class="fas fa-arrow-right"></i> Selanjutnya</button>
+        </div>
+    </div>
+
+    <div id="resultArea" class="result-area" style="display: none;"></div>
 </div>
-
-<div class="topbar">
-<div>Score: <span id="score">0</span></div>
-<div>Time: <span id="timer">10:00</span></div>
-</div>
-
-<div class="progress-bar">
-<div id="progressFill"></div>
-</div>
-
-<div class="content">
-<h3 id="question"></h3>
-<div id="options"></div>
-<div id="explanation"></div>
-</div>
-
-<div class="number-nav" id="numberNav"></div>
-
-<div class="nav">
-<button id="prevBtn">⬅</button>
-<button id="nextBtn">➡</button>
-<button id="submitBtn">Submit</button>
-</div>
-
-<div class="result" id="resultBox">
-<h2>Quiz Complete</h2>
-<div id="finalScore"></div>
-<div class="grade" id="grade"></div>
-<button onclick="location.reload()">Restart</button>
-</div>
-
-</div>
-
-<audio id="correctSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3"></audio>
-<audio id="wrongSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4c8f3a0d4e.mp3"></audio>
 
 <script>
+    // ==================== SOAL BARU (20 SOAL) ====================
+    const questionsData = [
+        { q: "Sukma and Riri ______ studying for the exam when the fire alarm rang.", o: ["Are", "Is", "Were", "Was"], correct: 2, translation: "🌐 Sukma dan riri sedang belajar untuk menghadapi ujian saat alarm kebakaran berbunyi pada saat itu", explanation: "Past Continuous untuk subject plural (Sukma and Riri) menggunakan 'were'." },
+        { q: "The plane __________ at 8AM tomorrow.", o: ["Leave", "Leaves", "Will leave", "Leaving"], correct: 1, translation: "🌐 Pesawat akan berangkat jam 8 pagi besok", explanation: "Jadwal tetap (schedule) menggunakan Simple Present: 'leaves' untuk subject singular 'the plane'." },
+        { q: "I _______ have a cat 3 years ago", o: ["Used to", "Am used to", "Was", "Get used to"], correct: 0, translation: "🌐 Aku pernah punya kucing 3 tahun lalu", explanation: "'Used to' digunakan untuk menyatakan kebiasaan di masa lalu yang sudah tidak dilakukan lagi." },
+        { q: "Agus __________ his homework before going to workout", o: ["Finish", "Finished", "Finishes", "Finishing"], correct: 1, translation: "🌐 Agus menyelesaikan PR nya sebelum pergi berolahraga", explanation: "Past tense karena menyatakan kejadian yang sudah selesai sebelum pergi workout." },
+        { q: "The pencil is ______ the Freezer", o: ["On", "In", "At", "Between"], correct: 1, translation: "🌐 Pensil berada di atas kulkas", explanation: "'In' digunakan untuk lokasi di dalam freezer (kulkas)." },
+        { q: "Dodi and Bima _________ playing soccer every weekend", o: ["Enjoys", "Enjoy", "Enjoyes", "Enjoying"], correct: 1, translation: "🌐 Dodi dan Bima menikmati bermain bola setiap akhir pekan", explanation: "Subject plural (Dodi and Bima) menggunakan verb dasar 'enjoy'." },
+        { q: "I _________ my teeth 3 times yesterday", o: ["Brush", "Brushes", "Brushed", "Brushing"], correct: 2, translation: "🌐 Aku menggosok gigiku 3 kali kemarin", explanation: "Keterangan waktu 'yesterday' menunjukkan Past Tense: 'brushed'." },
+        { q: "The children didn't _____ to school yesterday", o: ["Go", "Goes", "Gone", "Went"], correct: 0, translation: "🌐 Anak anak tidak pergi ke sekolah kemarin", explanation: "Setelah 'didn't' gunakan verb 1 (go)." },
+        { q: "I ______ so happy last night", o: ["Am", "Is", "Were", "Was"], correct: 3, translation: "🌐 Aku sangat senang kemarin malam", explanation: "Past tense: 'was' untuk subject I." },
+        { q: "I ______ my homework every evening", o: ["Does", "Do", "Did", "Done"], correct: 1, translation: "🌐 Aku mengerjakan PR ku setiap malam", explanation: "Simple present untuk habitual action: 'do' untuk subject I." },
+        { q: "Whom______________________________visited ?", o: ["Has your neighbor", "Has your new neighbor", "Did your new neighbor", "Done"], correct: 1, translation: "🌐 Siapa yang sudah tetangga barumu kunjungi ?", explanation: "Present Perfect: 'Whom has your new neighbor visited?' dengan auxiliary 'has' untuk subject singular." },
+        { q: "Whom do you ______________ every morning?", o: ["Miss", "Missed", "Missing", "Misses"], correct: 0, translation: "🌐 Siapa yang kamu rindukan setiap pagi?", explanation: "Setelah 'do' gunakan verb 1: 'miss'." },
+        { q: "A : There are four radios in the attic B : Yes, but ________ of them work. They are _________ broken", o: ["Neither/none", "All/both", "Both/Neither", "None/All"], correct: 3, translation: "🌐 A : Ada empat radio di loteng B : Ya, tapi tidak satupun berfungsi. Semuanya rusak", explanation: "'None of them work' (tidak satupun berfungsi) dan 'They are all broken' (semuanya rusak)." },
+        { q: "A : They Aren't at home. They _____________out B : ok, can you give them this envelope", o: ["Are going", "Go", "Can go", "Have gone"], correct: 3, translation: "🌐 Mereka tidak ada dirumah, mereka telah pergi keluar", explanation: "Present Perfect: 'have gone' menyatakan mereka sudah pergi dan belum kembali." },
+        { q: "William _________ a lot about 19th century poets recently, and he __________another book about them a few hours ago", o: ["Is reading / has bought", "Read / can buy", "Has read / bought", "Had read / bought"], correct: 2, translation: "🌐 William telah banyak membaca tentang penyair abad 19 baru-baru ini, dan dia membeli buku lain tentang mereka beberapa jam yang lalu", explanation: "'Recently' menggunakan Present Perfect (has read), 'a few hours ago' menggunakan Past Tense (bought)." },
+        { q: "___________ you _________ your homework yet ?", o: ["Do/do", "Did/do", "Can/do", "Have/done"], correct: 3, translation: "🌐 Apakah kamu sudah mengerjakan PR mu?", explanation: "Present Perfect: 'Have you done' untuk menanyakan apakah pekerjaan sudah selesai." },
+        { q: "The boy _____________ all the questions in the test correctly yesterday", o: ["Has answer", "Answered", "Is answering", "Can answer"], correct: 1, translation: "🌐 Anak laki-laki itu menjawab semua pertanyaan dalam ujian dengan benar kemarin", explanation: "Keterangan waktu 'yesterday' menggunakan Past Tense: 'answered'." },
+        { q: "Rafael ____________ a student at university for eight years. He __________ school yet", o: ["Has been / hasn't finished", "Is / didn't finish", "Was / doesn't finish", "Can be / isn't finishing"], correct: 0, translation: "🌐 Rafael telah menjadi mahasiswa selama delapan tahun. Dia belum lulus sekolah", explanation: "'For eight years' menggunakan Present Perfect (has been), 'yet' menggunakan Present Perfect negatif (hasn't finished)." },
+        { q: "In the morning, she ____________ a cake for her friend's birthday and _________ it with chocolate drops", o: ["Is making / is decorating", "Made / decorated", "Has made / has decorated", "Can make / can decorate"], correct: 1, translation: "🌐 Di pagi hari, dia membuat kue untuk ulang tahun temannya dan menghiasinya dengan tetesan coklat", explanation: "Kedua kejadian terjadi di masa lalu (past tense): made dan decorated." },
+        { q: "Nancy ________ the floor, so be careful it ___________ slippery at the moment", o: ["Is polishing / was", "Polished / has been", "Has polished / is", "Polishes / were"], correct: 2, translation: "🌐 Nancy sedang mengepel lantai, jadi hati-hati saat ini licin", explanation: "Present Perfect (has polished) menunjukkan hasil, dan 'at the moment' menggunakan Present Continuous (is)." }
+    ];
 
-const correctSound=document.getElementById("correctSound");
-const wrongSound=document.getElementById("wrongSound");
-
-const questions=[
-
-{
-q:"You should ________ it fixed before it stops working.",
-o:["have","having","had","to have"],a:0,
-e:"Causative: should have something done"
-},
-{
-q:"If only I _____ more willing before",
-o:["had been","was","am","have been"],a:0,
-e:"If only + past perfect"
-},
-{
-q:"Not only ________ more employees, but also expanded",
-o:["have we hired","we hired","we have hired","did we hire"],a:0,
-e:"Inversion after not only"
-},
-{
-q:"You should ________ me earlier",
-o:["have told","told","tell","telling"],a:0,
-e:"Should have + V3"
-},
-{
-q:"Rarely ________ someone experience this",
-o:["does","did","has","is"],a:0,
-e:"Inversion → does"
-},
-{
-q:"Nor ________ to take responsibility",
-o:["does he try","he tries","did he try","he try"],a:0,
-e:"Nor → inversion"
-},
-{
-q:"I wish I ________ more carefully",
-o:["had thought","thought","have thought","think"],a:0,
-e:"Wish → past perfect"
-},
-{
-q:"If she _____ tomorrow, we will go",
-o:["comes","came","come","coming"],a:0,
-e:"First conditional"
-},
-{
-q:"If it ______ tomorrow, we can't picnic",
-o:["rains","rain","rained","raining"],a:0,
-e:"Present simple"
-},
-{
-q:"If you _____ him, tell him",
-o:["see","saw","seen","seeing"],a:0,
-e:"First conditional"
-},
-{
-q:"If she doesn't hurry, she _____ miss",
-o:["will","would","can","should"],a:0,
-e:"Will future"
-},
-{
-q:"If I ___ money, I will buy car",
-o:["have","had","having","has"],a:0,
-e:"Present simple"
-},
-{
-q:"If you _____ to see it, borrow mine",
-o:["want","wanted","wanting","wants"],a:0,
-e:"Present simple"
-},
-{
-q:"If you _____ too loud, hearing damaged",
-o:["listen","listened","listening","listens"],a:0,
-e:"Present simple"
-},
-{
-q:"If I _____ you, I would go",
-o:["were","am","was","be"],a:0,
-e:"If I were you"
-},
-{
-q:"If he ate, he would have teeth issues",
-o:["Correct","Wrong","Wrong","Wrong"],a:0,
-e:"Second conditional correct"
-},
-{
-q:"My boss would ____ pleased",
-o:["be","is","was","been"],a:0,
-e:"Would + V1"
-},
-{
-q:"If they ____ the match, they celebrate",
-o:["win","won","winning","wins"],a:0,
-e:"First conditional"
-},
-{
-q:"If you _____ exam, you'd be happy",
-o:["had passed","pass","passed","passing"],a:0,
-e:"Third conditional"
-}
-
-];
-
-let current=0;
-let answers=new Array(questions.length).fill(null);
-let submitted=false;
-let time=600;
-
-function render(){
-let q=questions[current];
-document.getElementById("question").innerText=q.q;
-
-let box=document.getElementById("options");
-box.innerHTML="";
-
-q.o.forEach((opt,i)=>{
-let div=document.createElement("div");
-div.className="option";
-
-if(answers[current]!=null){
-if(i==q.a) div.classList.add("correct");
-if(i==answers[current] && i!=q.a) div.classList.add("wrong");
-}
-
-div.innerText=opt;
-
-div.addEventListener("click",()=>{
-if(answers[current]!=null||submitted) return;
-
-answers[current]=i;
-
-if(i==q.a){
-confetti({particleCount:80,spread:60});
-correctSound.currentTime=0;
-correctSound.play();
-}else{
-wrongSound.currentTime=0;
-wrongSound.play();
-}
-
-render();
-updateScore();
-});
-
-box.appendChild(div);
-});
-
-let exp=document.getElementById("explanation");
-exp.innerHTML=answers[current]!=null?`<b>Penjelasan:</b> ${q.e}`:"";
-
-updateNav();
-updateProgress();
-updateNumberNav();
-}
-
-function updateScore(){
-let score=answers.filter((a,i)=>a===questions[i].a).length;
-document.getElementById("score").innerText=score;
-}
-
-function updateProgress(){
-let done=answers.filter(a=>a!=null).length;
-document.getElementById("progressFill").style.width=(done/questions.length*100)+"%";
-}
-
-function updateNumberNav(){
-let nav="";
-for(let i=0;i<questions.length;i++){
-let cls="";
-if(answers[i]!=null) cls+="answered ";
-if(i==current) cls+="active";
-nav+=`<button class="${cls}" onclick="go(${i})">${i+1}</button>`;
-}
-document.getElementById("numberNav").innerHTML=nav;
-}
-
-function updateNav(){
-document.getElementById("prevBtn").disabled=current==0;
-document.getElementById("nextBtn").disabled=current==questions.length-1;
-}
-
-function go(i){current=i;render();}
-
-document.getElementById("nextBtn").onclick=()=>{if(current<questions.length-1){current++;render();}};
-document.getElementById("prevBtn").onclick=()=>{if(current>0){current--;render();}};
-
-setInterval(()=>{
-if(submitted) return;
-let m=Math.floor(time/60);
-let s=time%60;
-document.getElementById("timer").innerText=`${m}:${s.toString().padStart(2,'0')}`;
-if(time<=0) submit();
-time--;
-},1000);
-
-function submit(){
-if(submitted) return;
-submitted=true;
-
-let score=answers.filter((a,i)=>a===questions[i].a).length;
-let percent=Math.round(score/questions.length*100);
-let grade=percent>=90?"A":percent>=80?"B":percent>=70?"C":percent>=60?"D":"E";
-
-document.getElementById("resultBox").style.display="block";
-document.getElementById("finalScore").innerText=`Score: ${score}/${questions.length} (${percent}%)`;
-document.getElementById("grade").innerText=`Grade: ${grade}`;
-
-confetti({particleCount:120,spread:70});
-}
-
-document.getElementById("submitBtn").onclick=submit;
-
-render();
-
+    // State aplikasi
+    let currentIndex = 0;
+    let userAnswers = new Array(questionsData.length).fill(null);
+    let answerStatus = new Array(questionsData.length).fill(false);
+    let answeredQuestions = new Array(questionsData.length).fill(false);
+    let score = 0;
+    
+    const totalQ = questionsData.length;
+    document.getElementById("totalQuestions").innerText = totalQ;
+    document.getElementById("totalDisplay").innerText = totalQ;
+    
+    const questionTextEl = document.getElementById("questionText");
+    const questionTranslationEl = document.getElementById("questionTranslation");
+    const optionsContainer = document.getElementById("optionsContainer");
+    const feedbackArea = document.getElementById("feedbackArea");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const scoreSpan = document.getElementById("scoreValue");
+    const resultAreaDiv = document.getElementById("resultArea");
+    const quizCardDiv = document.getElementById("quizCard");
+    
+    function recalcScore() {
+        let newScore = 0;
+        for (let i = 0; i < totalQ; i++) {
+            if (answerStatus[i] === true) newScore++;
+        }
+        score = newScore;
+        scoreSpan.innerText = score;
+    }
+    
+    function updateNavButtons() {
+        prevBtn.disabled = (currentIndex === 0);
+        if (currentIndex === totalQ - 1) {
+            nextBtn.innerHTML = '<i class="fas fa-check-circle"></i> Lihat Hasil';
+        } else {
+            nextBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Selanjutnya';
+        }
+        
+        if (!answeredQuestions[currentIndex]) {
+            nextBtn.disabled = true;
+        } else {
+            nextBtn.disabled = false;
+        }
+    }
+    
+    function renderFeedbackForCurrent() {
+        const idx = currentIndex;
+        const selected = userAnswers[idx];
+        const isAnswered = answeredQuestions[idx];
+        const isCorrect = answerStatus[idx];
+        const question = questionsData[idx];
+        
+        if (!isAnswered || selected === null) {
+            feedbackArea.className = "feedback-area feedback-neutral";
+            feedbackArea.innerHTML = `<div class="feedback-text"><i class="fas fa-lightbulb"></i> Pilih salah satu jawaban untuk melihat pembahasan & kunci.</div>`;
+            return;
+        }
+        
+        const selectedText = question.o[selected];
+        const correctText = question.o[question.correct];
+        const explanation = question.explanation;
+        
+        if (isCorrect) {
+            feedbackArea.className = "feedback-area feedback-correct";
+            feedbackArea.innerHTML = `
+                <div class="feedback-text">
+                    <i class="fas fa-check-circle" style="color:#2b9348; font-size:1.2rem;"></i>
+                    <strong>✅ Jawaban Benar!</strong> &nbsp; Pilihanmu: "${selectedText}" 
+                </div>
+                <div style="margin-top: 8px; font-size:0.9rem;">📘 <strong>Kunci & Pembahasan:</strong> ${explanation} (Jawaban benar: <strong>${correctText}</strong>)</div>
+            `;
+        } else {
+            feedbackArea.className = "feedback-area feedback-wrong";
+            feedbackArea.innerHTML = `
+                <div class="feedback-text">
+                    <i class="fas fa-times-circle" style="color:#e63946; font-size:1.2rem;"></i>
+                    <strong>❌ Jawaban Salah</strong> &nbsp; Kamu menjawab: "${selectedText}"
+                </div>
+                <div style="margin-top: 8px; font-size:0.9rem;">📘 <strong>Kunci & Pembahasan:</strong> ${explanation} (Jawaban benar: <strong>${correctText}</strong>)</div>
+            `;
+        }
+    }
+    
+    function renderCurrentQuestion() {
+        const qData = questionsData[currentIndex];
+        questionTextEl.innerText = qData.q;
+        questionTranslationEl.innerHTML = `<i class="fas fa-globe-asia"></i> ${qData.translation}`;
+        const selectedIdx = userAnswers[currentIndex];
+        const isAnsweredLocal = answeredQuestions[currentIndex];
+        
+        let optionsHtml = '';
+        const letters = ['A', 'B', 'C', 'D'];
+        qData.o.forEach((opt, idx) => {
+            let additionalClass = '';
+            if (isAnsweredLocal && selectedIdx === idx) {
+                additionalClass = 'style="background: #E9DFFF; border-color: #9B6BFF; box-shadow: 0 2px 8px rgba(155,107,255,0.2);"';
+            }
+            optionsHtml += `
+                <div class="option-btn" data-opt-index="${idx}" ${additionalClass}>
+                    <span class="prefix">${letters[idx]}</span>
+                    <span style="flex:1;">${opt}</span>
+                </div>
+            `;
+        });
+        optionsContainer.innerHTML = optionsHtml;
+        
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const optIndex = parseInt(btn.dataset.optIndex);
+                handleAnswer(optIndex);
+            });
+        });
+        
+        renderFeedbackForCurrent();
+        updateNavButtons();
+        document.getElementById("currentIdxDisplay").innerText = currentIndex + 1;
+    }
+    
+    function handleAnswer(selectedIndex) {
+        const currentQ = questionsData[currentIndex];
+        const isCorrectNow = (selectedIndex === currentQ.correct);
+        const wasAlreadyAnswered = answeredQuestions[currentIndex];
+        
+        userAnswers[currentIndex] = selectedIndex;
+        answeredQuestions[currentIndex] = true;
+        const oldStatus = answerStatus[currentIndex];
+        answerStatus[currentIndex] = isCorrectNow;
+        
+        if (oldStatus !== isCorrectNow) {
+            recalcScore();
+        } else if (!wasAlreadyAnswered && isCorrectNow) {
+            recalcScore();
+        } else if (!wasAlreadyAnswered && !isCorrectNow) {
+            recalcScore();
+        } else if (wasAlreadyAnswered && oldStatus !== isCorrectNow) {
+            recalcScore();
+        } else {
+            recalcScore();
+        }
+        
+        renderCurrentQuestion();
+        updateNavButtons();
+    }
+    
+    function goNext() {
+        if (currentIndex < totalQ - 1) {
+            currentIndex++;
+            renderCurrentQuestion();
+            updateNavButtons();
+        } else {
+            if (answeredQuestions.every(v => v === true)) {
+                showFinalResult();
+            } else {
+                alert(`⚠️ Anda belum menjawab semua soal! Selesaikan dulu ${totalQ - answeredQuestions.filter(v=>v===true).length} soal tersisa.`);
+            }
+        }
+    }
+    
+    function goPrev() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            renderCurrentQuestion();
+            updateNavButtons();
+        }
+    }
+    
+    function analyzeWeakness() {
+        let categories = {
+            "Past Continuous (was/were + ing)": [],
+            "Simple Present & Present Perfect": [],
+            "Past Tense (verb 2)": [],
+            "Used to & Habitual Past": [],
+            "Prepositions (in/on/at)": [],
+            "Quantifiers (none/all/both)": [],
+            "Present Perfect (have/has)": []
+        };
+        
+        for (let i = 0; i < totalQ; i++) {
+            const isCorrect = answerStatus[i];
+            const qText = questionsData[i].q;
+            let category = "";
+            
+            if (qText.includes("when the fire alarm rang") || qText.includes("studying")) category = "Past Continuous (was/were + ing)";
+            else if (qText.includes("every") || qText.includes("every morning") || qText.includes("every weekend")) category = "Simple Present & Present Perfect";
+            else if (qText.includes("yesterday") || qText.includes("ago") || qText.includes("last night")) category = "Past Tense (verb 2)";
+            else if (qText.includes("used to")) category = "Used to & Habitual Past";
+            else if (qText.includes("the Freezer") || qText.includes("on") || qText.includes("in")) category = "Prepositions (in/on/at)";
+            else if (qText.includes("none") || qText.includes("all") || qText.includes("both")) category = "Quantifiers (none/all/both)";
+            else if (qText.includes("yet") || qText.includes("recently") || qText.includes("for eight years")) category = "Present Perfect (have/has)";
+            else category = "Grammar Fundamentals";
+            
+            if (!isCorrect) {
+                if (!categories[category]) categories[category] = [];
+                categories[category].push(i+1);
+            }
+        }
+        
+        let weaknesses = [];
+        for (let [cat, arr] of Object.entries(categories)) {
+            if (arr && arr.length > 0) {
+                weaknesses.push({ cat, count: arr.length, soal: arr });
+            }
+        }
+        return weaknesses;
+    }
+    
+    function showFinalResult() {
+        quizCardDiv.style.display = "none";
+        document.querySelector(".score-panel").style.display = "none";
+        resultAreaDiv.style.display = "block";
+        
+        const percentage = (score / totalQ) * 100;
+        let gradeText = "";
+        if (percentage >= 85) gradeText = "🏆 Excellent! Grammar pro!";
+        else if (percentage >= 70) gradeText = "🎉 Good job, tingkatkan lagi!";
+        else if (percentage >= 50) gradeText = "📚 Perlu belajar lebih giat, fokus pada pembahasan.";
+        else gradeText = "⚠️ Masih banyak kelemahan, pelajari ulang materi dasar.";
+        
+        const weaknesses = analyzeWeakness();
+        let weakHtml = `<div style="margin-top: 16px;"><strong><i class="fas fa-chart-line"></i> Analisis Kelemahan:</strong><br/>`;
+        if (weaknesses.length === 0) {
+            weakHtml += `<span class="weakness-tag"><i class="fas fa-check-circle"></i> Hebat! Tidak ada kelemahan signifikan!</span>`;
+        } else {
+            weakHtml += `<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">`;
+            weaknesses.forEach(w => {
+                weakHtml += `<span class="weakness-tag"><i class="fas fa-exclamation-triangle"></i> ${w.cat} (salah di ${w.soal.length} soal: nomor ${w.soal.join(", ")})</span>`;
+            });
+            weakHtml += `</div><p style="margin-top: 12px; font-size: 0.85rem;">✨ Fokus ulang pada materi di atas untuk meningkatkan skor!</p>`;
+        }
+        
+        resultAreaDiv.innerHTML = `
+            <div style="text-align: center;">
+                <i class="fas fa-chalkboard-user" style="font-size: 3rem; color:#8B5CF6;"></i>
+                <h2 style="margin: 10px 0 5px;">Hasil Evaluasi Grammar</h2>
+                <div style="font-size: 2.5rem; font-weight: 800; background: linear-gradient(145deg,#7C3AED,#A78BFA); -webkit-background-clip:text; background-clip:text; color:transparent;">${score}/${totalQ}</div>
+                <div style="background:#ede8ff; display:inline-block; padding:5px 18px; border-radius:40px; margin-top:8px;">${gradeText}</div>
+                <div style="margin: 20px auto; max-width: 200px;">
+                    <canvas id="scoreChart" width="200" height="200"></canvas>
+                </div>
+                ${weakHtml}
+                <button id="restartQuizBtn" class="nav-btn nav-btn-primary" style="margin-top: 25px; background: #5a2d9c;"><i class="fas fa-sync-alt"></i> Ulangi Kuis</button>
+            </div>
+        `;
+        
+        const ctx = document.getElementById('scoreChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Benar', 'Salah'],
+                datasets: [{
+                    data: [score, totalQ - score],
+                    backgroundColor: ['#9B6BFF', '#F0E6FF'],
+                    borderWidth: 0,
+                    cutout: '65%'
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom' } } }
+        });
+        
+        document.getElementById("restartQuizBtn").addEventListener("click", () => {
+            userAnswers.fill(null);
+            answerStatus.fill(false);
+            answeredQuestions.fill(false);
+            currentIndex = 0;
+            score = 0;
+            recalcScore();
+            quizCardDiv.style.display = "block";
+            document.querySelector(".score-panel").style.display = "flex";
+            resultAreaDiv.style.display = "none";
+            renderCurrentQuestion();
+            updateNavButtons();
+        });
+    }
+    
+    prevBtn.addEventListener("click", goPrev);
+    nextBtn.addEventListener("click", goNext);
+    
+    recalcScore();
+    renderCurrentQuestion();
 </script>
-
 </body>
 </html>
