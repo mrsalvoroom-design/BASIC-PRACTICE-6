@@ -113,32 +113,12 @@
             font-size: 1.7rem;
             font-weight: 700;
             color: #1E1A3E;
-            margin-bottom: 0.75rem;
+            margin-bottom: 2rem;
             line-height: 1.3;
             background: #F9F6FF;
             padding: 1rem 1.5rem;
             border-radius: 2rem;
             border-left: 8px solid #9B6BFF;
-        }
-
-        .question-translation {
-            font-size: 0.95rem;
-            color: #6b5b8e;
-            margin-bottom: 1.5rem;
-            padding-left: 1.5rem;
-            font-style: normal;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #FCF9FF;
-            padding: 0.7rem 1.5rem;
-            border-radius: 1rem;
-            border-left: 3px solid #cbbaff;
-        }
-
-        .question-translation i {
-            color: #9B6BFF;
-            font-size: 1rem;
         }
 
         .options-grid {
@@ -183,7 +163,6 @@
         }
 
         .feedback-area {
-            background: #F8F4FF;
             border-radius: 1.5rem;
             padding: 1.2rem 1.5rem;
             margin: 1rem 0 1.5rem;
@@ -272,6 +251,11 @@
             margin: 0.2rem;
         }
 
+        .chart-container {
+            max-width: 220px;
+            margin: 0 auto;
+        }
+
         @media (max-width: 680px) {
             .quiz-card {
                 padding: 1rem;
@@ -288,7 +272,7 @@
 <body>
 <div class="quiz-container" id="quizApp">
     <div class="hero">
-        <h1><i class="fas fa-gem"></i> SALVO GROUP <br> GRAMMAR BASIC PART 1</h1>
+        <h1><i class="fas fa-gem"></i> SALVO GROUP <br style="display: none;"> GRAMMAR BASIC PART 1</h1>
         <div class="sub">✨ Master your English grammar — instant feedback & smart scoring</div>
     </div>
 
@@ -299,7 +283,6 @@
 
     <div class="quiz-card" id="quizCard">
         <div class="question-text" id="questionText">Loading...</div>
-        <div class="question-translation" id="questionTranslation"></div>
         <div class="options-grid" id="optionsContainer"></div>
         <div id="feedbackArea" class="feedback-area feedback-neutral">
             <div class="feedback-text"><i class="fas fa-lightbulb"></i> Pilih salah satu jawaban untuk melihat pembahasan & kunci.</div>
@@ -310,35 +293,137 @@
         </div>
     </div>
 
-    <div id="resultArea" class="result-area" style="display: none;"></div>
+    <div id="resultArea" class="result-area" style="display: none;">
+        <!-- hasil akhir dengan chart dan kelemahan -->
+    </div>
 </div>
 
 <script>
-    // ==================== SOAL BARU (20 SOAL) ====================
+    // ---------- SOAL BARU DENGAN PENJELASAN BILINGUAL PANJANG & DETAIL ----------
     const questionsData = [
-        { q: "Sukma and Riri ______ studying for the exam when the fire alarm rang.", o: ["Are", "Is", "Were", "Was"], correct: 2, translation: "🌐 Sukma dan riri sedang belajar untuk menghadapi ujian saat alarm kebakaran berbunyi pada saat itu", explanation: "Past Continuous untuk subject plural (Sukma and Riri) menggunakan 'were'." },
-        { q: "The plane __________ at 8AM tomorrow.", o: ["Leave", "Leaves", "Will leave", "Leaving"], correct: 1, translation: "🌐 Pesawat akan berangkat jam 8 pagi besok", explanation: "Jadwal tetap (schedule) menggunakan Simple Present: 'leaves' untuk subject singular 'the plane'." },
-        { q: "I _______ have a cat 3 years ago", o: ["Used to", "Am used to", "Was", "Get used to"], correct: 0, translation: "🌐 Aku pernah punya kucing 3 tahun lalu", explanation: "'Used to' digunakan untuk menyatakan kebiasaan di masa lalu yang sudah tidak dilakukan lagi." },
-        { q: "Agus __________ his homework before going to workout", o: ["Finish", "Finished", "Finishes", "Finishing"], correct: 1, translation: "🌐 Agus menyelesaikan PR nya sebelum pergi berolahraga", explanation: "Past tense karena menyatakan kejadian yang sudah selesai sebelum pergi workout." },
-        { q: "The pencil is ______ the Freezer", o: ["On", "In", "At", "Between"], correct: 1, translation: "🌐 Pensil berada di atas kulkas", explanation: "'In' digunakan untuk lokasi di dalam freezer (kulkas)." },
-        { q: "Dodi and Bima _________ playing soccer every weekend", o: ["Enjoys", "Enjoy", "Enjoyes", "Enjoying"], correct: 1, translation: "🌐 Dodi dan Bima menikmati bermain bola setiap akhir pekan", explanation: "Subject plural (Dodi and Bima) menggunakan verb dasar 'enjoy'." },
-        { q: "I _________ my teeth 3 times yesterday", o: ["Brush", "Brushes", "Brushed", "Brushing"], correct: 2, translation: "🌐 Aku menggosok gigiku 3 kali kemarin", explanation: "Keterangan waktu 'yesterday' menunjukkan Past Tense: 'brushed'." },
-        { q: "The children didn't _____ to school yesterday", o: ["Go", "Goes", "Gone", "Went"], correct: 0, translation: "🌐 Anak anak tidak pergi ke sekolah kemarin", explanation: "Setelah 'didn't' gunakan verb 1 (go)." },
-        { q: "I ______ so happy last night", o: ["Am", "Is", "Were", "Was"], correct: 3, translation: "🌐 Aku sangat senang kemarin malam", explanation: "Past tense: 'was' untuk subject I." },
-        { q: "I ______ my homework every evening", o: ["Does", "Do", "Did", "Done"], correct: 1, translation: "🌐 Aku mengerjakan PR ku setiap malam", explanation: "Simple present untuk habitual action: 'do' untuk subject I." },
-        { q: "Whom______________________________visited ?", o: ["Has your neighbor", "Has your new neighbor", "Did your new neighbor", "Done"], correct: 1, translation: "🌐 Siapa yang sudah tetangga barumu kunjungi ?", explanation: "Present Perfect: 'Whom has your new neighbor visited?' dengan auxiliary 'has' untuk subject singular." },
-        { q: "Whom do you ______________ every morning?", o: ["Miss", "Missed", "Missing", "Misses"], correct: 0, translation: "🌐 Siapa yang kamu rindukan setiap pagi?", explanation: "Setelah 'do' gunakan verb 1: 'miss'." },
-        { q: "A : There are four radios in the attic B : Yes, but ________ of them work. They are _________ broken", o: ["Neither/none", "All/both", "Both/Neither", "None/All"], correct: 3, translation: "🌐 A : Ada empat radio di loteng B : Ya, tapi tidak satupun berfungsi. Semuanya rusak", explanation: "'None of them work' (tidak satupun berfungsi) dan 'They are all broken' (semuanya rusak)." },
-        { q: "A : They Aren't at home. They _____________out B : ok, can you give them this envelope", o: ["Are going", "Go", "Can go", "Have gone"], correct: 3, translation: "🌐 Mereka tidak ada dirumah, mereka telah pergi keluar", explanation: "Present Perfect: 'have gone' menyatakan mereka sudah pergi dan belum kembali." },
-        { q: "William _________ a lot about 19th century poets recently, and he __________another book about them a few hours ago", o: ["Is reading / has bought", "Read / can buy", "Has read / bought", "Had read / bought"], correct: 2, translation: "🌐 William telah banyak membaca tentang penyair abad 19 baru-baru ini, dan dia membeli buku lain tentang mereka beberapa jam yang lalu", explanation: "'Recently' menggunakan Present Perfect (has read), 'a few hours ago' menggunakan Past Tense (bought)." },
-        { q: "___________ you _________ your homework yet ?", o: ["Do/do", "Did/do", "Can/do", "Have/done"], correct: 3, translation: "🌐 Apakah kamu sudah mengerjakan PR mu?", explanation: "Present Perfect: 'Have you done' untuk menanyakan apakah pekerjaan sudah selesai." },
-        { q: "The boy _____________ all the questions in the test correctly yesterday", o: ["Has answer", "Answered", "Is answering", "Can answer"], correct: 1, translation: "🌐 Anak laki-laki itu menjawab semua pertanyaan dalam ujian dengan benar kemarin", explanation: "Keterangan waktu 'yesterday' menggunakan Past Tense: 'answered'." },
-        { q: "Rafael ____________ a student at university for eight years. He __________ school yet", o: ["Has been / hasn't finished", "Is / didn't finish", "Was / doesn't finish", "Can be / isn't finishing"], correct: 0, translation: "🌐 Rafael telah menjadi mahasiswa selama delapan tahun. Dia belum lulus sekolah", explanation: "'For eight years' menggunakan Present Perfect (has been), 'yet' menggunakan Present Perfect negatif (hasn't finished)." },
-        { q: "In the morning, she ____________ a cake for her friend's birthday and _________ it with chocolate drops", o: ["Is making / is decorating", "Made / decorated", "Has made / has decorated", "Can make / can decorate"], correct: 1, translation: "🌐 Di pagi hari, dia membuat kue untuk ulang tahun temannya dan menghiasinya dengan tetesan coklat", explanation: "Kedua kejadian terjadi di masa lalu (past tense): made dan decorated." },
-        { q: "Nancy ________ the floor, so be careful it ___________ slippery at the moment", o: ["Is polishing / was", "Polished / has been", "Has polished / is", "Polishes / were"], correct: 2, translation: "🌐 Nancy sedang mengepel lantai, jadi hati-hati saat ini licin", explanation: "Present Perfect (has polished) menunjukkan hasil, dan 'at the moment' menggunakan Present Continuous (is)." }
+        { 
+            q: "Sukma and Riri ______ studying for the exam when the fire alarm rang.", 
+            o: ["Are", "Is", "Were", "Was"], 
+            correct: 2, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> This sentence describes an action that was in progress in the past when another action interrupted it. This is Past Continuous Tense. The subject 'Sukma and Riri' is plural, so we use 'were'. 'Were studying' indicates they were in the middle of studying when the alarm rang.<br><br>📌 <strong>Indonesia:</strong> Kalimat ini menggambarkan aksi yang sedang berlangsung di masa lalu ketika aksi lain menyela. Ini adalah Past Continuous Tense. Subjek 'Sukma and Riri' adalah jamak, sehingga kita menggunakan 'were'. 'Were studying' menunjukkan mereka sedang dalam proses belajar ketika alarm berbunyi.<br><br>📌 <strong>Rumus / Formula:</strong> Subject (plural) + were + verb-ing + when + simple past<br><br>📌 <strong>Arti / Meaning:</strong> 'Sukma dan Riri sedang belajar ketika alarm kebakaran berbunyi.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Were</strong>"
+        },
+        { 
+            q: "The plane __________ at 8AM tomorrow.", 
+            o: ["Leave", "Leaves", "Will leave", "Leaving"], 
+            correct: 2, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> 'Tomorrow' indicates future time. Simple Future Tense is formed with 'will + verb-1'. 'The plane will leave at 8AM tomorrow' means there is a plan or schedule for the plane to depart. While scheduled events can use Simple Present, 'will leave' is also correct for future plans.<br><br>📌 <strong>Indonesia:</strong> 'Tomorrow' menunjukkan waktu masa depan. Simple Future Tense dibentuk dengan 'will + verb-1'. 'The plane will leave at 8AM tomorrow' berarti ada rencana atau jadwal pesawat untuk berangkat. Meskipun acara terjadwal bisa menggunakan Simple Present, 'will leave' juga benar untuk rencana masa depan.<br><br>📌 <strong>Rumus / Formula:</strong> Subject + will + verb-1 + time signal (future)<br><br>📌 <strong>Arti / Meaning:</strong> 'Pesawat akan berangkat jam 8 pagi besok.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Will leave</strong>"
+        },
+        { 
+            q: "I _______ have a cat 3 years ago", 
+            o: ["Used to", "Am used to", "Was", "Get used to"], 
+            correct: 0, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> '3 years ago' indicates a past habit or state that is no longer true. 'Used to' is used to talk about past habits or states that have changed. 'I used to have a cat' means I had a cat in the past but no longer have it now.<br><br>📌 <strong>Indonesia:</strong> '3 years ago' menunjukkan kebiasaan atau keadaan masa lalu yang tidak lagi benar. 'Used to' digunakan untuk berbicara tentang kebiasaan atau keadaan masa lalu yang telah berubah. 'I used to have a cat' berarti saya dulu punya kucing tetapi sekarang tidak lagi.<br><br>📌 <strong>Rumus / Formula:</strong> Subject + used to + verb-1 + time signal (past)<br><br>📌 <strong>Arti / Meaning:</strong> 'Saya dulu punya kucing 3 tahun yang lalu.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Used to</strong>"
+        },
+        { 
+            q: "Agus __________ his homework before going to workout", 
+            o: ["Finish", "Finished", "Finishes", "Finishing"], 
+            correct: 2, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> This sentence describes a habitual action or a general truth. Subject 'Agus' is third person singular, so the verb must end with '-es'. 'Finishes' is the correct form. 'Agus finishes his homework before going to workout' means Agus always does his homework first before exercising.<br><br>📌 <strong>Indonesia:</strong> Kalimat ini menggambarkan kebiasaan atau kebenaran umum. Subjek 'Agus' adalah orang ketiga tunggal, sehingga kata kerja harus berakhiran '-es'. 'Finishes' adalah bentuk yang benar. 'Agus finishes his homework before going to workout' berarti Agus selalu mengerjakan PR-nya terlebih dahulu sebelum berolahraga.<br><br>📌 <strong>Rumus / Formula:</strong> Subject (singular) + verb-1+s/es + complement<br><br>📌 <strong>Arti / Meaning:</strong> 'Agus menyelesaikan PR-nya sebelum pergi berolahraga.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Finishes</strong>"
+        },
+        { 
+            q: "The pencil is ______ the Freezer", 
+            o: ["On", "In", "At", "Between"], 
+            correct: 0, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> Prepositions of place: 'on' is used for surfaces, 'in' for enclosed spaces, 'at' for specific points, 'between' for two objects. A freezer is a closed container, so 'in' is the correct preposition. 'The pencil is in the freezer' means the pencil is inside the freezer.<br><br>📌 <strong>Indonesia:</strong> Preposisi tempat: 'on' digunakan untuk permukaan, 'in' untuk ruang tertutup, 'at' untuk titik spesifik, 'between' untuk dua objek. Freezer adalah wadah tertutup, jadi 'in' adalah preposisi yang benar. 'The pencil is in the freezer' berarti pensil itu ada di dalam freezer.<br><br>📌 <strong>Rumus / Formula:</strong> Subject + to be + in + enclosed space<br><br>📌 <strong>Arti / Meaning:</strong> 'Pensil itu ada di dalam freezer.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: In</strong>"
+        },
+        { 
+            q: "Dodi and Bima _________ playing soccer every weekend", 
+            o: ["Enjoys", "Enjoy", "Enjoyes", "Enjoying"], 
+            correct: 1, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> 'Every weekend' indicates a habitual action (Simple Present). The subject 'Dodi and Bima' is plural, so the verb 'enjoy' does not add '-s'. The structure is 'enjoy + verb-ing'. 'Dodi and Bima enjoy playing soccer every weekend' means they like playing soccer regularly.<br><br>📌 <strong>Indonesia:</strong> 'Every weekend' menunjukkan kebiasaan (Simple Present). Subjek 'Dodi and Bima' adalah jamak, sehingga kata kerja 'enjoy' tidak mendapat '-s'. Strukturnya adalah 'enjoy + verb-ing'. 'Dodi and Bima enjoy playing soccer every weekend' berarti mereka suka bermain sepak bola secara teratur.<br><br>📌 <strong>Rumus / Formula:</strong> Subject (plural) + enjoy + verb-ing + complement<br><br>📌 <strong>Arti / Meaning:</strong> 'Dodi dan Bima menikmati bermain sepak bola setiap akhir pekan.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Enjoy</strong>"
+        },
+        { 
+            q: "I _________ my teeth 3 times yesterday", 
+            o: ["Brush", "Brushes", "Brushed", "Brushing"], 
+            correct: 2, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> 'Yesterday' is a past time signal, so we use Simple Past Tense. Regular verb 'brush' becomes 'brushed' in past tense. 'I brushed my teeth 3 times yesterday' means the action happened and was completed in the past.<br><br>📌 <strong>Indonesia:</strong> 'Yesterday' adalah penanda waktu lampau, sehingga kita menggunakan Simple Past Tense. Kata kerja beraturan 'brush' menjadi 'brushed' dalam bentuk lampau. 'I brushed my teeth 3 times yesterday' berarti aksi terjadi dan selesai di masa lalu.<br><br>📌 <strong>Rumus / Formula:</strong> Subject + verb-2 + complement + time signal (past)<br><br>📌 <strong>Arti / Meaning:</strong> 'Saya menyikat gigi 3 kali kemarin.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Brushed</strong>"
+        },
+        { 
+            q: "The children didn't _____ to school yesterday", 
+            o: ["Go", "Goes", "Gone", "Went"], 
+            correct: 0, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> After the auxiliary 'didn't' (did not), the verb must be in base form (verb-1). 'Go' is the base form. 'The children didn't go to school yesterday' means they did not attend school yesterday.<br><br>📌 <strong>Indonesia:</strong> Setelah auxiliary 'didn't' (did not), kata kerja harus dalam bentuk dasar (verb-1). 'Go' adalah bentuk dasar. 'The children didn't go to school yesterday' berarti mereka tidak pergi ke sekolah kemarin.<br><br>📌 <strong>Rumus / Formula:</strong> Subject + didn't + verb-1 + complement + time signal<br><br>📌 <strong>Arti / Meaning:</strong> 'Anak-anak tidak pergi ke sekolah kemarin.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Go</strong>"
+        },
+        { 
+            q: "I ______ so happy last night", 
+            o: ["Am", "Is", "Were", "Was"], 
+            correct: 3, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> 'Last night' indicates past time. Subject 'I' uses 'was' in past tense. 'I was so happy last night' means the feeling of happiness occurred in the past.<br><br>📌 <strong>Indonesia:</strong> 'Last night' menunjukkan waktu lampau. Subjek 'I' menggunakan 'was' dalam bentuk lampau. 'I was so happy last night' berarti perasaan bahagia itu terjadi di masa lalu.<br><br>📌 <strong>Rumus / Formula:</strong> Subject (I) + was + adjective + time signal (past)<br><br>📌 <strong>Arti / Meaning:</strong> 'Saya sangat bahagia tadi malam.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Was</strong>"
+        },
+        { 
+            q: "I ______ my homework every evening", 
+            o: ["Does", "Do", "Did", "Done"], 
+            correct: 1, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> 'Every evening' indicates a habitual action (Simple Present). Subject 'I' uses the base form of the verb 'do'. 'I do my homework every evening' means it is a regular activity.<br><br>📌 <strong>Indonesia:</strong> 'Every evening' menunjukkan kebiasaan (Simple Present). Subjek 'I' menggunakan bentuk dasar kata kerja 'do'. 'I do my homework every evening' berarti itu adalah kegiatan rutin.<br><br>📌 <strong>Rumus / Formula:</strong> Subject (I/You/We/They) + verb-1 + complement + time signal<br><br>📌 <strong>Arti / Meaning:</strong> 'Saya mengerjakan PR setiap malam.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Do</strong>"
+        },
+        { 
+            q: "Whom______________________________visited ?", 
+            o: ["Has your neighbor", "Has your new neighbor", "Did your new neighbor", "Done"], 
+            correct: 1, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> 'Whom' is used as an object question. This is a Present Perfect question: 'Has + subject + verb-3?'. The correct structure is 'Whom has your new neighbor visited?' meaning 'Siapa yang telah dikunjungi oleh tetangga barumu?'.<br><br>📌 <strong>Indonesia:</strong> 'Whom' digunakan sebagai pertanyaan objek. Ini adalah pertanyaan Present Perfect: 'Has + subjek + verb-3?'. Struktur yang benar adalah 'Whom has your new neighbor visited?' yang berarti 'Siapa yang telah dikunjungi oleh tetangga barumu?'.<br><br>📌 <strong>Rumus / Formula:</strong> Whom + has + subject + verb-3?<br><br>📌 <strong>Arti / Meaning:</strong> 'Siapa yang telah dikunjungi oleh tetangga barumu?'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Has your new neighbor</strong>"
+        },
+        { 
+            q: "Whom do you ______________ every morning?", 
+            o: ["Miss", "Missed", "Missing", "Misses"], 
+            correct: 0, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> After 'do you', the verb must be in base form (verb-1). 'Miss' is the base form. 'Whom do you miss every morning?' means 'Siapa yang kamu rindukan setiap pagi?'.<br><br>📌 <strong>Indonesia:</strong> Setelah 'do you', kata kerja harus dalam bentuk dasar (verb-1). 'Miss' adalah bentuk dasar. 'Whom do you miss every morning?' berarti 'Siapa yang kamu rindukan setiap pagi?'.<br><br>📌 <strong>Rumus / Formula:</strong> Whom + do + you + verb-1 + time signal?<br><br>📌 <strong>Arti / Meaning:</strong> 'Siapa yang kamu rindukan setiap pagi?'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Miss</strong>"
+        },
+        { 
+            q: "A : There are four radios in the attic B : Yes, but ________ of them work. They are _________ broken", 
+            o: ["Neither/none", "All/both", "Both/Neither", "None/All"], 
+            correct: 3, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> 'None of them work' means zero of the radios function. 'They are all broken' means every radio is damaged. This combination correctly expresses that all four radios are not working.<br><br>📌 <strong>Indonesia:</strong> 'None of them work' berarti tidak ada satu pun radio yang berfungsi. 'They are all broken' berarti setiap radio rusak. Kombinasi ini dengan tepat menyatakan bahwa keempat radio tidak berfungsi.<br><br>📌 <strong>Rumus / Formula:</strong> None of + plural noun + plural verb / All + are + adjective<br><br>📌 <strong>Arti / Meaning:</strong> 'Tidak ada yang berfungsi. Semuanya rusak.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: None/All</strong>"
+        },
+        { 
+            q: "A : They Aren't at home. They _____________out B : ok, can you give them this envelope", 
+            o: ["Are going", "Go", "Can go", "Have gone"], 
+            correct: 3, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> The result of an action that affects the present (they are not at home now) is best expressed with Present Perfect Tense. 'Have gone' means they left and haven't returned. 'They have gone out' means they are currently out.<br><br>📌 <strong>Indonesia:</strong> Hasil dari suatu aksi yang mempengaruhi saat ini (mereka tidak di rumah sekarang) paling tepat diungkapkan dengan Present Perfect Tense. 'Have gone' berarti mereka pergi dan belum kembali. 'They have gone out' berarti mereka sedang keluar.<br><br>📌 <strong>Rumus / Formula:</strong> Subject (plural) + have + verb-3 + complement<br><br>📌 <strong>Arti / Meaning:</strong> 'Mereka sedang keluar.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Have gone</strong>"
+        },
+        { 
+            q: "William _________ a lot about 19th century poets recently, and he __________another book about them a few hours ago", 
+            o: ["Is reading / has bought", "Read / can buy", "Has read / bought", "Had read / bought"], 
+            correct: 2, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> 'Recently' indicates Present Perfect Tense. 'Has read' shows a completed action with present relevance. 'A few hours ago' is a specific past time, so Simple Past 'bought' is used. 'William has read a lot... and he bought another book...'<br><br>📌 <strong>Indonesia:</strong> 'Recently' menunjukkan Present Perfect Tense. 'Has read' menunjukkan aksi yang telah selesai dengan relevansi saat ini. 'A few hours ago' adalah waktu lampau spesifik, sehingga Simple Past 'bought' digunakan. 'William has read a lot... and he bought another book...'<br><br>📌 <strong>Rumus / Formula:</strong> Present Perfect (has + verb-3) + and + Simple Past (verb-2)<br><br>📌 <strong>Arti / Meaning:</strong> 'William baru-baru ini banyak membaca tentang penyair abad ke-19, dan dia membeli buku lain tentang mereka beberapa jam yang lalu.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Has read / bought</strong>"
+        },
+        { 
+            q: "___________ you _________ your homework yet ?", 
+            o: ["Do/do", "Did/do", "Can/do", "Have/done"], 
+            correct: 3, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> 'Yet' is used in Present Perfect Tense questions. The structure is 'Have/Has + subject + verb-3?'. 'Have you done your homework yet?' means 'Apakah kamu sudah mengerjakan PR-mu?'.<br><br>📌 <strong>Indonesia:</strong> 'Yet' digunakan dalam pertanyaan Present Perfect Tense. Strukturnya adalah 'Have/Has + subjek + verb-3?'. 'Have you done your homework yet?' berarti 'Apakah kamu sudah mengerjakan PR-mu?'.<br><br>📌 <strong>Rumus / Formula:</strong> Have + you + verb-3 + yet?<br><br>📌 <strong>Arti / Meaning:</strong> 'Apakah kamu sudah mengerjakan PR-mu?'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Have/done</strong>"
+        },
+        { 
+            q: "The boy _____________ all the questions in the test correctly yesterday", 
+            o: ["Has answer", "Answered", "Is answering", "Can answer"], 
+            correct: 1, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> 'Yesterday' is a past time signal, so we use Simple Past Tense. 'Answered' is the past tense form of 'answer'. 'The boy answered all the questions correctly yesterday' means he completed the action in the past.<br><br>📌 <strong>Indonesia:</strong> 'Yesterday' adalah penanda waktu lampau, sehingga kita menggunakan Simple Past Tense. 'Answered' adalah bentuk lampau dari 'answer'. 'The boy answered all the questions correctly yesterday' berarti dia menyelesaikan aksi di masa lalu.<br><br>📌 <strong>Rumus / Formula:</strong> Subject + verb-2 + complement + time signal (past)<br><br>📌 <strong>Arti / Meaning:</strong> 'Anak laki-laki itu menjawab semua pertanyaan dalam ujian dengan benar kemarin.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Answered</strong>"
+        },
+        { 
+            q: "Rafael ____________ a student at university for eight years. He __________ school yet", 
+            o: ["Has been / hasn't finished", "Is / didn't finish", "Was / doesn't finish", "Can be / isn't finishing"], 
+            correct: 0, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> 'For eight years' indicates a duration from past to present, so Present Perfect Continuous or Present Perfect is used. 'Has been' shows he started in the past and continues. 'Yet' is used with Present Perfect negative: 'hasn't finished' means not completed up to now.<br><br>📌 <strong>Indonesia:</strong> 'For eight years' menunjukkan durasi dari masa lalu hingga sekarang, sehingga Present Perfect atau Present Perfect Continuous digunakan. 'Has been' menunjukkan dia mulai di masa lalu dan berlanjut. 'Yet' digunakan dengan Present Perfect negatif: 'hasn't finished' berarti belum selesai sampai sekarang.<br><br>📌 <strong>Rumus / Formula:</strong> Subject + has been + complement + for + duration / Subject + hasn't + verb-3 + yet<br><br>📌 <strong>Arti / Meaning:</strong> 'Rafael telah menjadi mahasiswa di universitas selama delapan tahun. Dia belum lulus sekolah.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Has been / hasn't finished</strong>"
+        },
+        { 
+            q: "In the morning, she ____________ a cake for her friend's birthday and _________ it with chocolate drops", 
+            o: ["Is making / is decorating", "Made / decorated", "Has made / has decorated", "Can make / can decorate"], 
+            correct: 1, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> This describes completed actions in the past. Simple Past Tense is appropriate for a sequence of completed events. 'Made' and 'decorated' are past tense forms. The sentence tells a story about what she did in the morning.<br><br>📌 <strong>Indonesia:</strong> Ini menggambarkan aksi yang telah selesai di masa lalu. Simple Past Tense tepat untuk rangkaian kejadian yang telah selesai. 'Made' dan 'decorated' adalah bentuk lampau. Kalimat ini menceritakan tentang apa yang dia lakukan di pagi hari.<br><br>📌 <strong>Rumus / Formula:</strong> Subject + verb-2 + complement + and + subject + verb-2 + complement<br><br>📌 <strong>Arti / Meaning:</strong> 'Di pagi hari, dia membuat kue untuk ulang tahun temannya dan menghiasnya dengan tetesan cokelat.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Made / decorated</strong>"
+        },
+        { 
+            q: "Nancy ________ the floor, so be careful it ___________ slippery at the moment", 
+            o: ["Is polishing / was", "Polished / has been", "Has polished / is", "Polishes / were"], 
+            correct: 2, 
+            explanation: "💡 <strong>PEMBAHASAN LENGKAP / DETAILED EXPLANATION:</strong><br><br>📌 <strong>English:</strong> The first part describes a completed action with present result (the floor is slippery now). Present Perfect 'has polished' is used. 'At the moment' indicates present state, so 'is' is used. 'Nancy has polished the floor, so be careful it is slippery at the moment.'<br><br>📌 <strong>Indonesia:</strong> Bagian pertama menggambarkan aksi yang telah selesai dengan hasil saat ini (lantai licin sekarang). Present Perfect 'has polished' digunakan. 'At the moment' menunjukkan keadaan saat ini, sehingga 'is' digunakan. 'Nancy has polished the floor, so be careful it is slippery at the moment.'<br><br>📌 <strong>Rumus / Formula:</strong> Subject + has + verb-3 + object, so + subject + to be (present) + adjective<br><br>📌 <strong>Arti / Meaning:</strong> 'Nancy telah mengepel lantai, jadi hati-hati karena saat ini licin.'<br><br>✅ <strong>Jawaban Benar / Correct Answer: Has polished / is</strong>"
+        }
     ];
 
-    // State aplikasi
+    // state aplikasi
     let currentIndex = 0;
     let userAnswers = new Array(questionsData.length).fill(null);
     let answerStatus = new Array(questionsData.length).fill(false);
@@ -349,16 +434,18 @@
     document.getElementById("totalQuestions").innerText = totalQ;
     document.getElementById("totalDisplay").innerText = totalQ;
     
+    // Elemen DOM
     const questionTextEl = document.getElementById("questionText");
-    const questionTranslationEl = document.getElementById("questionTranslation");
     const optionsContainer = document.getElementById("optionsContainer");
     const feedbackArea = document.getElementById("feedbackArea");
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
     const scoreSpan = document.getElementById("scoreValue");
+    const currentIdxDisplaySpan = document.getElementById("currentIdxDisplay");
     const resultAreaDiv = document.getElementById("resultArea");
     const quizCardDiv = document.getElementById("quizCard");
     
+    // fungsi hitung ulang score
     function recalcScore() {
         let newScore = 0;
         for (let i = 0; i < totalQ; i++) {
@@ -368,8 +455,10 @@
         scoreSpan.innerText = score;
     }
     
+    // update tombol navigasi
     function updateNavButtons() {
         prevBtn.disabled = (currentIndex === 0);
+        
         if (currentIndex === totalQ - 1) {
             nextBtn.innerHTML = '<i class="fas fa-check-circle"></i> Lihat Hasil';
         } else {
@@ -383,6 +472,7 @@
         }
     }
     
+    // render feedback
     function renderFeedbackForCurrent() {
         const idx = currentIndex;
         const selected = userAnswers[idx];
@@ -405,26 +495,26 @@
             feedbackArea.innerHTML = `
                 <div class="feedback-text">
                     <i class="fas fa-check-circle" style="color:#2b9348; font-size:1.2rem;"></i>
-                    <strong>✅ Jawaban Benar!</strong> &nbsp; Pilihanmu: "${selectedText}" 
+                    <strong>✅ Jawaban Benar / Correct!</strong> &nbsp; Pilihanmu: "${selectedText}" 
                 </div>
-                <div style="margin-top: 8px; font-size:0.9rem;">📘 <strong>Kunci & Pembahasan:</strong> ${explanation} (Jawaban benar: <strong>${correctText}</strong>)</div>
+                <div style="margin-top: 12px; font-size:0.95rem; line-height:1.6;">${explanation}</div>
             `;
         } else {
             feedbackArea.className = "feedback-area feedback-wrong";
             feedbackArea.innerHTML = `
                 <div class="feedback-text">
                     <i class="fas fa-times-circle" style="color:#e63946; font-size:1.2rem;"></i>
-                    <strong>❌ Jawaban Salah</strong> &nbsp; Kamu menjawab: "${selectedText}"
+                    <strong>❌ Jawaban Salah / Incorrect</strong> &nbsp; Kamu menjawab: "${selectedText}"
                 </div>
-                <div style="margin-top: 8px; font-size:0.9rem;">📘 <strong>Kunci & Pembahasan:</strong> ${explanation} (Jawaban benar: <strong>${correctText}</strong>)</div>
+                <div style="margin-top: 12px; font-size:0.95rem; line-height:1.6;">${explanation}<br><br>📌 <strong>Jawaban yang benar / Correct answer:</strong> "${correctText}"</div>
             `;
         }
     }
     
+    // render soal
     function renderCurrentQuestion() {
         const qData = questionsData[currentIndex];
         questionTextEl.innerText = qData.q;
-        questionTranslationEl.innerHTML = `<i class="fas fa-globe-asia"></i> ${qData.translation}`;
         const selectedIdx = userAnswers[currentIndex];
         const isAnsweredLocal = answeredQuestions[currentIndex];
         
@@ -432,20 +522,22 @@
         const letters = ['A', 'B', 'C', 'D'];
         qData.o.forEach((opt, idx) => {
             let additionalClass = '';
+            let checkedStyle = '';
             if (isAnsweredLocal && selectedIdx === idx) {
                 additionalClass = 'style="background: #E9DFFF; border-color: #9B6BFF; box-shadow: 0 2px 8px rgba(155,107,255,0.2);"';
+                checkedStyle = 'font-weight: bold;';
             }
             optionsHtml += `
                 <div class="option-btn" data-opt-index="${idx}" ${additionalClass}>
                     <span class="prefix">${letters[idx]}</span>
-                    <span style="flex:1;">${opt}</span>
+                    <span style="flex:1; ${checkedStyle}">${opt}</span>
                 </div>
             `;
         });
         optionsContainer.innerHTML = optionsHtml;
         
         document.querySelectorAll('.option-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (e) => {
                 const optIndex = parseInt(btn.dataset.optIndex);
                 handleAnswer(optIndex);
             });
@@ -456,6 +548,7 @@
         document.getElementById("currentIdxDisplay").innerText = currentIndex + 1;
     }
     
+    // handle jawaban
     function handleAnswer(selectedIndex) {
         const currentQ = questionsData[currentIndex];
         const isCorrectNow = (selectedIndex === currentQ.correct);
@@ -482,6 +575,7 @@
         updateNavButtons();
     }
     
+    // navigasi
     function goNext() {
         if (currentIndex < totalQ - 1) {
             currentIndex++;
@@ -492,6 +586,7 @@
                 showFinalResult();
             } else {
                 alert(`⚠️ Anda belum menjawab semua soal! Selesaikan dulu ${totalQ - answeredQuestions.filter(v=>v===true).length} soal tersisa.`);
+                return;
             }
         }
     }
@@ -504,15 +599,18 @@
         }
     }
     
+    // analisis kelemahan
     function analyzeWeakness() {
         let categories = {
-            "Past Continuous (was/were + ing)": [],
-            "Simple Present & Present Perfect": [],
-            "Past Tense (verb 2)": [],
-            "Used to & Habitual Past": [],
-            "Prepositions (in/on/at)": [],
-            "Quantifiers (none/all/both)": [],
-            "Present Perfect (have/has)": []
+            "Past Continuous Tense": [],
+            "Future Tense (will)": [],
+            "Used to (Past Habit)": [],
+            "Simple Present Tense": [],
+            "Prepositions of Place": [],
+            "Simple Past Tense": [],
+            "Present Perfect Tense": [],
+            "Quantifiers (None/All)": [],
+            "Wh-Questions (Whom)": []
         };
         
         for (let i = 0; i < totalQ; i++) {
@@ -520,30 +618,31 @@
             const qText = questionsData[i].q;
             let category = "";
             
-            if (qText.includes("when the fire alarm rang") || qText.includes("studying")) category = "Past Continuous (was/were + ing)";
-            else if (qText.includes("every") || qText.includes("every morning") || qText.includes("every weekend")) category = "Simple Present & Present Perfect";
-            else if (qText.includes("yesterday") || qText.includes("ago") || qText.includes("last night")) category = "Past Tense (verb 2)";
-            else if (qText.includes("used to")) category = "Used to & Habitual Past";
-            else if (qText.includes("the Freezer") || qText.includes("on") || qText.includes("in")) category = "Prepositions (in/on/at)";
-            else if (qText.includes("none") || qText.includes("all") || qText.includes("both")) category = "Quantifiers (none/all/both)";
-            else if (qText.includes("yet") || qText.includes("recently") || qText.includes("for eight years")) category = "Present Perfect (have/has)";
-            else category = "Grammar Fundamentals";
+            if (qText.includes("when the fire alarm rang")) category = "Past Continuous Tense";
+            else if (qText.includes("tomorrow")) category = "Future Tense (will)";
+            else if (qText.includes("used to") || qText.includes("3 years ago")) category = "Used to (Past Habit)";
+            else if (qText.includes("every weekend") || qText.includes("every evening") || qText.includes("every morning") || qText.includes("every day")) category = "Simple Present Tense";
+            else if (qText.includes("the Freezer") || qText.includes("preposition")) category = "Prepositions of Place";
+            else if (qText.includes("yesterday") || qText.includes("last night") || qText.includes("ago") || qText.includes("in the morning")) category = "Simple Past Tense";
+            else if (qText.includes("yet") || qText.includes("recently") || qText.includes("for eight years") || qText.includes("has polished")) category = "Present Perfect Tense";
+            else if (qText.includes("None/All")) category = "Quantifiers (None/All)";
+            else if (qText.includes("Whom")) category = "Wh-Questions (Whom)";
+            else category = "Other";
             
             if (!isCorrect) {
-                if (!categories[category]) categories[category] = [];
+                categories[category] = categories[category] || [];
                 categories[category].push(i+1);
             }
         }
         
         let weaknesses = [];
         for (let [cat, arr] of Object.entries(categories)) {
-            if (arr && arr.length > 0) {
-                weaknesses.push({ cat, count: arr.length, soal: arr });
-            }
+            if (arr.length > 0) weaknesses.push({ cat, count: arr.length, soal: arr });
         }
         return weaknesses;
     }
     
+    // tampilkan hasil akhir
     function showFinalResult() {
         quizCardDiv.style.display = "none";
         document.querySelector(".score-panel").style.display = "none";
@@ -557,28 +656,28 @@
         else gradeText = "⚠️ Masih banyak kelemahan, pelajari ulang materi dasar.";
         
         const weaknesses = analyzeWeakness();
-        let weakHtml = `<div style="margin-top: 16px;"><strong><i class="fas fa-chart-line"></i> Analisis Kelemahan:</strong><br/>`;
+        let weakHtml = `<div style="margin-top: 16px;"><strong><i class="fas fa-chart-line"></i> Analisis Kelemahan / Weakness Analysis:</strong><br/>`;
         if (weaknesses.length === 0) {
-            weakHtml += `<span class="weakness-tag"><i class="fas fa-check-circle"></i> Hebat! Tidak ada kelemahan signifikan!</span>`;
+            weakHtml += `<span class="weakness-tag"><i class="fas fa-check-circle"></i> Hebat! Tidak ada kelemahan signifikan! / Great! No significant weaknesses!</span>`;
         } else {
             weakHtml += `<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">`;
             weaknesses.forEach(w => {
                 weakHtml += `<span class="weakness-tag"><i class="fas fa-exclamation-triangle"></i> ${w.cat} (salah di ${w.soal.length} soal: nomor ${w.soal.join(", ")})</span>`;
             });
-            weakHtml += `</div><p style="margin-top: 12px; font-size: 0.85rem;">✨ Fokus ulang pada materi di atas untuk meningkatkan skor!</p>`;
+            weakHtml += `</div><p style="margin-top: 12px; font-size: 0.85rem;">✨ Fokus ulang pada materi di atas untuk meningkatkan skor! / Focus on the topics above to improve your score!</p>`;
         }
         
         resultAreaDiv.innerHTML = `
             <div style="text-align: center;">
                 <i class="fas fa-chalkboard-user" style="font-size: 3rem; color:#8B5CF6;"></i>
-                <h2 style="margin: 10px 0 5px;">Hasil Evaluasi Grammar</h2>
+                <h2 style="margin: 10px 0 5px;">Hasil Evaluasi Grammar / Grammar Evaluation Result</h2>
                 <div style="font-size: 2.5rem; font-weight: 800; background: linear-gradient(145deg,#7C3AED,#A78BFA); -webkit-background-clip:text; background-clip:text; color:transparent;">${score}/${totalQ}</div>
-                <div style="background:#ede8ff; display:inline-block; padding:5px 18px; border-radius:40px; margin-top:8px;">${gradeText}</div>
+                <div style="background:#ede8ff; display:inline-block; padding:5px 18px; border-radius:40px;">${gradeText}</div>
                 <div style="margin: 20px auto; max-width: 200px;">
                     <canvas id="scoreChart" width="200" height="200"></canvas>
                 </div>
                 ${weakHtml}
-                <button id="restartQuizBtn" class="nav-btn nav-btn-primary" style="margin-top: 25px; background: #5a2d9c;"><i class="fas fa-sync-alt"></i> Ulangi Kuis</button>
+                <button id="restartQuizBtn" class="nav-btn nav-btn-primary" style="margin-top: 25px; background: #5a2d9c;"><i class="fas fa-sync-alt"></i> Ulangi Kuis / Restart Quiz</button>
             </div>
         `;
         
@@ -586,7 +685,7 @@
         new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Benar', 'Salah'],
+                labels: ['Benar / Correct', 'Salah / Incorrect'],
                 datasets: [{
                     data: [score, totalQ - score],
                     backgroundColor: ['#9B6BFF', '#F0E6FF'],
@@ -612,9 +711,11 @@
         });
     }
     
+    // event listeners
     prevBtn.addEventListener("click", goPrev);
     nextBtn.addEventListener("click", goNext);
     
+    // init
     recalcScore();
     renderCurrentQuestion();
 </script>
